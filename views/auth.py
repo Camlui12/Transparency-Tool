@@ -2,13 +2,13 @@ from flask import render_template, request, redirect, session, url_for
 from app import app, db
 from models import User
 
-message = '' # Mensagem de erro de login
-messageReg = '' # Mensagem de login com sucesso
-messageCE = '' # Mensagem de conta existente
+message = '' # Error sign in message
+messageReg = '' # Success sign up message
+messageEA = '' # Existent account message
 
 @app.route('/signin')
 def signin():
-    return render_template('sign_in.html', message = message, messageCE = messageCE, messageReg = messageReg)
+    return render_template('sign_in.html', message = message, messageCE = messageEA, messageReg = messageReg)
 
 @app.route('/auth', methods=['POST',])
 def auth():
@@ -16,29 +16,29 @@ def auth():
     if user:
         if request.form.get('passw') == user.passw:
             global message
-            global messageCE
+            global messageEA
             global messageReg
 
             session['user_signed_in'] = user.email
 
             message = ''
             messageReg = ''
-            messageCE = ''
+            messageEA = ''
             return redirect(url_for('index'))
         else:
             message = 'Email or password are incorrect'
             messageReg = ''
-            messageCE = ''
+            messageEA = ''
             return redirect(url_for('signin'))
     else:
         message = 'Email or password are incorrect'
         messageReg = ''
-        messageCE = ''
+        messageEA = ''
         return redirect(url_for('signin'))
 
 @app.route('/signup')
 def signup():
-    return render_template('sign_up.html', message = message, messageCE = messageCE, messageReg = messageReg)
+    return render_template('sign_up.html', message = message, messageCE = messageEA, messageReg = messageReg)
 
 @app.route('/register', methods=['POST',])
 def register():
@@ -50,10 +50,10 @@ def register():
     if conta:
         global message
         global messageReg
-        global messageCE
+        global messageEA
         message = ''
         messageReg = ''
-        messageCE = 'This email is already registered, sign in'
+        messageEA = 'This email is already registered, sign in'
         return redirect(url_for('signin'))
     
     nova_conta = User(email = email, name = name, passw = passw)
@@ -62,6 +62,6 @@ def register():
 
     message = ''
     messageReg = 'Account created sucsessfully'
-    messageCE = ''
+    messageEA = ''
 
     return redirect(url_for('signin'))
