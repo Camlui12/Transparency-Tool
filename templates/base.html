@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/nav.css">
+    {% block head %}
+    {% endblock %}
+    <title>{% block title %}My WebSite{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Tool</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('doc') }}">Documentation</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('guidelines') }}">Guidelines</a></li>
+        </ul>
+
+        <div class="auth-buttons">
+            <a href="{{ url_for('signin') }}" class="btn">Sign In</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-register">Sign Up</a>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script src="/static/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+.signin {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.signinForm {
+    margin-top: 12%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 25%;
+    width: 35%;
+    gap: 20px;
+}
+
+.signinForm input{
+    width: 50%;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.btn-submit {
+    border: 1px solid #ffae33;
+    color: #f4f4f4;
+    background-color: #ffae33;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    color: #ffae33;
+    background-color: #f4f4f4;
+}
+
+.msg {
+    margin: 0;
+    color: red;
+    font-weight: bold;
+}
+
+.msgR {
+    margin: 0;
+    color: green;
+    font-weight: bold;
+}
