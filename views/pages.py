@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, session, url_for
 from app import app, db
-from models import User
 
 @app.route('/doc')
 def doc():

@@ -8,7 +8,7 @@ messageEA = '' # Existent account message
 
 @app.route('/signin')
 def signin():
-    return render_template('sign_in.html', message = message, messageCE = messageEA, messageReg = messageReg)
+    return render_template('sign_in.html', message = message, messageEA = messageEA, messageReg = messageReg)
 
 @app.route('/auth', methods=['POST',])
 def auth():
@@ -38,7 +38,7 @@ def auth():
 
 @app.route('/signup')
 def signup():
-    return render_template('sign_up.html', message = message, messageCE = messageEA, messageReg = messageReg)
+    return render_template('sign_up.html', message = message, messageEA = messageEA, messageReg = messageReg)
 
 @app.route('/register', methods=['POST',])
 def register():
@@ -46,8 +46,8 @@ def register():
     name = request.form.get('name')
     passw = request.form.get('passw')
 
-    conta = User.query.filter_by(email = email).first()
-    if conta:
+    account = User.query.filter_by(email = email).first()
+    if account:
         global message
         global messageReg
         global messageEA
@@ -56,8 +56,8 @@ def register():
         messageEA = 'This email is already registered, sign in'
         return redirect(url_for('signin'))
     
-    nova_conta = User(email = email, name = name, passw = passw)
-    db.session.add(nova_conta)
+    new_account = User(email = email, name = name, passw = passw)
+    db.session.add(new_account)
     db.session.commit()
 
     message = ''
@@ -65,3 +65,8 @@ def register():
     messageEA = ''
 
     return redirect(url_for('signin'))
+
+@app.route('/logout')
+def logout():
+    session['user_signed_in'] = None
+    return redirect(url_for('index'))

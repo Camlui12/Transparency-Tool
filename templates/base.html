@@ -10,22 +10,30 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">Tool</div>
+        <div class="logo"><a href="{{ url_for('index') }}">Tool</a></div>
         <ul class="nav-links">
             <li><a href="{{ url_for('index') }}">Home</a></li>
             <li><a href="{{ url_for('doc') }}">Documentation</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
             <li><a href="{{ url_for('guidelines') }}">Guidelines</a></li>
+            <li><a href="{{ url_for('dash') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('admin_guidelines') }}">Admin</a></li>
         </ul>
-
+        {% if 'user_signed_in' not in session or session['user_signed_in'] == None %}
         <div class="auth-buttons">
             <a href="{{ url_for('signin') }}" class="btn">Sign In</a>
             <a href="{{ url_for('signup') }}" class="btn btn-register">Sign Up</a>
         </div>
+        {% else %}
+        <div>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </div>
+        {% endif %}
     </nav>
 
     {% block content %}{% endblock %}
 
+    {% block scripts %}{% endblock %}
     <script src="/static/js/nav.js"></script>
 </body>
 </html>
