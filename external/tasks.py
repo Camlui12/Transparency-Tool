@@ -7,13 +7,13 @@ CORS(app)
 
 tasks_data = []
 
-@app.route('/tasks_dashboard')
-def tasks_dashboard():
-    # Importação tardia para evitar importação circular
-    from views.utils import check_admin
+# @app.route('/tasks_dashboard')
+# def tasks_dashboard():
+#     # Importação tardia para evitar importação circular
+#     from views.utils import check_admin
     
-    is_admin = check_admin()
-    return render_template('dash.html', tasks=tasks_data, is_admin=is_admin)
+#     is_admin = check_admin()
+#     return render_template('dash.html', tasks=tasks_data, is_admin=is_admin)
 
 @app.route('/submit_tasks', methods=['POST'])
 def dashboard():

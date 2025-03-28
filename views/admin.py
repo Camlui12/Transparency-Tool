@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, session, url_for, flash
 from app import app, db
 from models import Guideline, Key_success_criterion, Conditioning_factor_transp, DX_factor, SECO_process, SECO_dimension
+from functions import isLogged, isAdmin
 
 # Messages
 admin_message = ''
@@ -9,24 +10,30 @@ message_type = 'info'
 # Routes
 @app.route('/admin/guidelines')
 def admin_guidelines():
-    admin_message = ''
-    message_type = 'info'
-    guidelines = Guideline.query.all()
-    key_success_criteria = Key_success_criterion.query.all()
-    conditioning_factors = Conditioning_factor_transp.query.all()
-    dx_factors = DX_factor.query.all()
-    seco_processes = SECO_process.query.all()
-    seco_dimensions = SECO_dimension.query.all()
-    
-    return render_template('admin_guidelines.html', 
-                          guidelines=guidelines,
-                          key_success_criteria=key_success_criteria,
-                          conditioning_factors=conditioning_factors,
-                          dx_factors=dx_factors,
-                          seco_processes=seco_processes,
-                          seco_dimensions=seco_dimensions,
-                          message=admin_message, 
-                          message_type=message_type)
+    if isLogged():
+        email = session['user_signed_in']
+        is_admin = isAdmin(email)
+        admin_message = ''
+        message_type = 'info'
+        guidelines = Guideline.query.all()
+        key_success_criteria = Key_success_criterion.query.all()
+        conditioning_factors = Conditioning_factor_transp.query.all()
+        dx_factors = DX_factor.query.all()
+        seco_processes = SECO_process.query.all()
+        seco_dimensions = SECO_dimension.query.all()
+        
+        return render_template('admin_guidelines.html', 
+                            guidelines=guidelines,
+                            key_success_criteria=key_success_criteria,
+                            conditioning_factors=conditioning_factors,
+                            dx_factors=dx_factors,
+                            seco_processes=seco_processes,
+                            seco_dimensions=seco_dimensions,
+                            message=admin_message, 
+                            message_type=message_type,
+                            is_admin=is_admin)
+    else:
+        return redirect(url_for('signin'))
 
 # Route to add a new guideline
 @app.route('/admin/add_guideline', methods=['POST'])
@@ -39,7 +46,7 @@ def add_guideline():
     if not guidelines:
         cont_guideline = 1
     else:
-        cont_guideline = Guideline.query.order_by(Guideline.guidelineID.desc()).first().guidelineID + 1
+        cont_guideline = guidelines[-1].guidelineID + 1
 
     title = request.form.get('title')
     description = request.form.get('description')
@@ -211,7 +218,7 @@ def add_seco_process():
     if not seco_processes:
         cont_seco_process = 1
     else:
-        cont_seco_process = SECO_process.query.order_by(SECO_process.seco_process_id.desc()).first().seco_process_id + 1    
+        cont_seco_process = seco_processes[-1].seco_process_id + 1   
 
     description = request.form.get('description')
     
@@ -289,7 +296,7 @@ def add_seco_dimension():
     if not seco_dimensions:
         cont_seco_dimension = 1
     else:
-        cont_seco_dimension = SECO_dimension.query.order_by(SECO_dimension.seco_dimension_id.desc()).first().seco_dimension_id + 1
+        cont_seco_dimension = seco_dimensions[-1].seco_dimension_id + 1
 
     name = request.form.get('name')
     
@@ -367,7 +374,7 @@ def add_conditioning_factor():
     if not conditioning_factors:
         cont_conditioning_factor = 1
     else:
-        cont_conditioning_factor = Conditioning_factor_transp.query.order_by(Conditioning_factor_transp.conditioning_factor_transp_id.desc()).first().conditioning_factor_transp_id + 1
+        cont_conditioning_factor = conditioning_factors[-1].conditioning_factor_transp_id + 1
 
     description = request.form.get('description')
     
@@ -445,7 +452,7 @@ def add_dx_factor():
     if not dx_factors:
         cont_dx_factor = 1
     else:
-        cont_dx_factor = DX_factor.query.order_by(DX_factor.dx_factor_id.desc()).first().dx_factor_id + 1
+        cont_dx_factor = dx_factors[-1].dx_factor_id + 1
 
     description = request.form.get('description')
     
@@ -523,7 +530,7 @@ def add_key_success_criterion():
     if not key_success_criteria:
         cont_key_success_criterion = 1
     else:
-        cont_key_success_criterion = Key_success_criterion.query.order_by(Key_success_criterion.key_success_criterion_id.desc()).first().key_success_criterion_id + 1
+        cont_key_success_criterion = key_success_criteria[-1].key_success_criterion_id + 1
 
     title = request.form.get('title')
     description = request.form.get('description')

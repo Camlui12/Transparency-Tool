@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="us">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +16,16 @@
             <li><a href="{{ url_for('doc') }}">Documentation</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
             <li><a href="{{ url_for('guidelines') }}">Guidelines</a></li>
-            <li><a href="{{ url_for('dash') }}">Dashboard</a></li>
+            {% if 'user_signed_in' in session and session['user_signed_in'] != None %}
+            {% if 'user_type' in session and session['user_type'] != 'admin' %}
+            <li><a href="{{ url_for('evaluations') }}">Evaluations</a></li>
+            {% endif %}
+            {% endif %}
+            {% if 'user_signed_in' in session and session['user_signed_in'] != None %}
+            {% if 'user_type' in session and session['user_type'] == 'admin' %}
             <li><a href="{{ url_for('admin_guidelines') }}">Admin</a></li>
+            {% endif %}
+            {% endif %}
         </ul>
         {% if 'user_signed_in' not in session or session['user_signed_in'] == None %}
         <div class="auth-buttons">
