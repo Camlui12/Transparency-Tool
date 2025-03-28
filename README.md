@@ -25,7 +25,7 @@
 
 1. Run the tool:
    ```bash
-   python main.py
+   python app.py
    ```
 
 2. Follow the on-screen instructions or refer to the documentation for more details.
